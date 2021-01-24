@@ -1,39 +1,39 @@
-const colors = [
-  '#FFFFFF',
-  '#2196F3',
-  '#4CAF50',
-  '#FF9800',
-  '#009688',
-  '#795548',
-];
-
-const randomIntegerFromInterval = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-};
+import api from './js/apiService';
+import template from './templates/imagesMarkup.hbs';
+import './styles.css';
 
 const refs = {
-  stopBtn: document.querySelector('[data-action="stop"]'),
-  startBtn: document.querySelector('[data-action="start"]'),
-  body: document.querySelector('body'),
+  searchForm: document.querySelector('#search-form'),
+  gallery: document.querySelector('#gallery'),
+  button: document.querySelector('#loadButton'),
 };
-let colorSwt;
-let isActive = false;
 
-function startSwitch() {
-  if (!isActive) {
-    isActive = true;
-    colorSwt = setInterval(() => {
-      refs.body.style.backgroundColor = `${
-        colors[randomIntegerFromInterval(0, 5)]
-      }`;
-    }, 1000);
-  }
+refs.searchForm.addEventListener('submit', searchQuery);
+refs.button.addEventListener('click', loadMoreBtnHandler);
+
+function searchQuery(e) {
+  e.preventDefault();
+  const input = e.currentTarget.elements.query.value;
+  api.searchQuery = input;
+  refs.gallery.innerHTML = '';
+  api.resetPage();
+  getAndInsertImg();
+}
+function loadMoreBtnHandler() {
+  getAndInsertImg();
+  setTimeout(() => {
+    window.scrollTo({
+      top: +window.scrollY + 700,
+      behavior: 'smooth',
+    });
+  }, 300);
 }
 
-function stopSwitch() {
-  clearInterval(colorSwt);
-  isActive = false;
+function insertLi(item) {
+  return refs.gallery.insertAdjacentHTML('beforeend', template(item));
 }
-
-refs.startBtn.addEventListener('click', startSwitch);
-refs.stopBtn.addEventListener('click', stopSwitch);
+function getAndInsertImg() {
+  api.fetchImg().then(hits => {
+    insertLi(hits);
+  });
+}

@@ -4,10 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Homework 11.1</title>
-  </head>
+    <link
+  href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  rel="stylesheet"/>
+    <title>Image finder</title>
+
   <body>
-    <button type="button" data-action="start">Start</button>
-    <button type="button" data-action="stop">Stop</button>
+    <form class="search-form" id="search-form">
+      <input
+      class="input"
+        type="text"
+        name="query"
+        autocomplete="off"
+        placeholder="Search images..."
+      />
+      <button type="submit" class="submitButton">Search</button>
+    </form>
+    <ul class="gallery" id="gallery">
+      
+    </ul>
+    <button class="loadButton" id="loadButton">Load more</button>
   </body>
 </html>
